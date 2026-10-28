@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101713">
+<title>FitMetric — Personal Fitness Calculator</title>
+<style>
+:root{--bg:#0b100d;--panel:#131b16;--panel2:#19231c;--line:#2a382e;--text:#f3f7f3;--muted:#9ba99e;--green:#b8f36b;--green2:#8fdb48;--blue:#8ad8ff;--orange:#ffc078;--radius:20px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% -10%,#203c29 0,transparent 36%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:26px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:38px}.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.5px;font-size:20px}.logo{width:38px;height:38px;border-radius:12px;background:var(--green);color:#14200f;display:grid;place-items:center;font-size:22px}.pill{border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:var(--muted);font-size:12px}.hero{max-width:730px;margin-bottom:28px}.eyebrow{color:var(--green);font-weight:750;letter-spacing:1.7px;text-transform:uppercase;font-size:11px}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.03;letter-spacing:-2.3px;margin:12px 0}.hero h1 span{color:var(--green)}.hero p{color:var(--muted);font-size:16px;max-width:590px;margin:15px 0 0}
+.layout{display:grid;grid-template-columns:350px 1fr;gap:20px;align-items:start}.panel{background:rgba(19,27,22,.92);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 18px 55px #0002}.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.panel h2{font-size:17px;margin:0;letter-spacing:-.3px}.step{color:var(--green);font-size:11px;font-weight:800;letter-spacing:1px}
+label{display:block;color:#c4cec6;font-size:12px;font-weight:650;margin:14px 0 7px}.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}input,select{width:100%;background:#0d140f;border:1px solid #304034;border-radius:11px;color:var(--text);padding:12px 12px;font:inherit;outline:none;min-width:0}input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #b8f32617}.unit{position:relative}.unit small{position:absolute;right:12px;top:12px;color:var(--muted);pointer-events:none}.unit input{padding-right:42px}
+.segment{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.segment button{background:#0d140f;border:1px solid #304034;border-radius:10px;color:var(--muted);padding:10px 5px;cursor:pointer;font-weight:700;font-size:12px}.segment button.active{background:#24371e;border-color:var(--green);color:var(--green)}
+.primary{width:100%;margin-top:22px;border:0;border-radius:12px;background:var(--green);color:#14200f;padding:14px;font-weight:850;font-size:14px;cursor:pointer;transition:.18s}.primary:hover{background:#c9ff88;transform:translateY(-1px)}.reset{background:transparent;color:var(--muted);border:0;cursor:pointer;font-size:12px;padding:10px}
+.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;gap:10px}.results-head p{margin:4px 0 0;color:var(--muted);font-size:12px}.live{font-size:11px;color:var(--green);border:1px solid #38552d;background:#1b2b18;padding:6px 9px;border-radius:99px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric{background:var(--panel2);border:1px solid #2a382e;border-radius:16px;padding:17px;min-width:0}.metric-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.metric-name{color:#b6c3b9;font-size:12px;font-weight:650}.metric-icon{font-size:18px}.metric-value{font-size:clamp(25px,3vw,34px);font-weight:850;letter-spacing:-1.3px;margin:10px 0 2px;line-height:1.15}.metric-value small{font-size:13px;color:var(--muted);font-weight:650;letter-spacing:0}.metric-note{font-size:11px;color:var(--muted)}.bar{height:5px;background:#2b382e;border-radius:99px;margin-top:13px;overflow:hidden}.bar span{display:block;height:100%;background:var(--green);border-radius:99px;width:65%}.metric.water .metric-value{color:var(--blue)}.metric.protein .metric-value{color:var(--green)}.metric.calories .metric-value{color:var(--orange)}.metric.bmr .metric-value{color:#d4b4ff}
+.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.mini{border:1px solid var(--line);border-radius:15px;padding:15px}.mini strong{display:block;font-size:22px;margin:4px 0}.mini span{font-size:11px;color:var(--muted)}.section{margin-top:22px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.section-title h3{margin:0;font-size:15px}.section-title span{font-size:11px;color:var(--muted)}.routine{display:grid;gap:8px}.day{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#111913;border-radius:12px;padding:11px 12px}.daytag{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;background:#263820;color:var(--green);border-radius:10px;font-weight:800;font-size:11px}.day strong{font-size:12px;display:block}.day small{font-size:11px;color:var(--muted)}.day .rest{margin-left:auto;color:var(--muted);font-size:11px}
+.notice{border:1px solid #3a4436;background:#151d15;color:#aab7ac;padding:13px 14px;border-radius:12px;font-size:11px;margin-top:18px}.notice strong{color:#dfe9df}.footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#738078;font-size:11px;margin-top:25px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.wrap{padding:18px 14px 40px}.top{margin-bottom:28px}.panel{padding:18px}.hero h1{letter-spacing:-1.5px}.cards{gap:9px}.metric{padding:13px}.metric-value{font-size:27px}}
+@media(max-width:390px){.cards{grid-template-columns:1fr 1fr}.fieldrow{gap:8px}.metric-value{font-size:24px}.pill{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand"><div class="logo">✳</div>fitmetric<span style="color:var(--green)">.</span></div><div class="pill">YOUR PERSONAL FITNESS DASHBOARD</div></header>
+  <section class="hero"><div class="eyebrow">Smarter goals. Stronger you.</div><h1>Your body.<br><span>Your numbers.</span></h1><p>Calculate your daily water, protein, calorie needs and get a simple weekly workout plan — tailored to your body and your goal.</p></section>
+  <main class="layout">
+    <section class="panel">
+      <div class="panel-head"><h2>Your details</h2><span class="step">01 / PROFILE</span></div>
+      <form id="form">
+        <div class="fieldrow"><div><label for="weight">Weight</label><div class="unit"><input id="weight" type="number" min="1" max="400" value="65" required><small>kg</small></div></div><div><label for="height">Height</label><div class="unit"><input id="height" type="number" min="80" max="250" value="170" required><small>cm</small></div></div></div>
+        <div class="fieldrow"><div><label for="age">Age</label><div class="unit"><input id="age" type="number" min="15" max="100" value="25" required><small>yrs</small></div></div><div><label for="sex">Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div></div>
+        <label>What's your main goal?</label><div class="segment" id="goals"><button type="button" class="active" data-goal="muscle">Muscle gain</button><button type="button" data-goal="loss">Fat loss</button><button type="button" data-goal="maintain">Maintain</button></div>
+        <label for="activity">Daily activity level</label><select id="activity"><option value="1.2">Sedentary — mostly sitting</option><option value="1.375">Light — 1–3 days/week</option><option value="1.55" selected>Moderate — 3–5 days/week</option><option value="1.725">Very active — 6–7 days/week</option></select>
+        <div class="fieldrow"><div><label for="duration">Workout length</label><select id="duration"><option>30</option><option>45</option><option selected>60</option><option>90</option></select></div><div><label for="days">Days per week</label><select id="days"><option value="3">3 days</option><option value="4">4 days</option><option value="5" selected>5 days</option><option value="6">6 days</option></select></div></div>
+        <button class="primary" type="submit">Calculate my targets ↗</button><div style="text-align:center"><button class="reset" type="button" id="reset">Reset to defaults</button></div>
+      </form>
+    </section>
+    <section class="panel">
+      <div class="results-head"><div><h2>Your daily targets</h2><p>Personalised estimates from your details</p></div><div class="live">● LIVE RESULTS</div></div>
+      <div class="cards">
+        <article class="metric water"><div class="metric-top"><span class="metric-name">Water intake</span><span class="metric-icon">💧</span></div><div class="metric-value" id="water">2.3 <small>L/day</small></div><div class="metric-note" id="waternote">Estimated daily range</div><div class="bar"><span id="waterbar" style="width:60%;background:var(--blue)"></span></div></article>
+        <article class="metric protein"><div class="metric-top"><span class="metric-name">Protein</span><span class="metric-icon">🥚</span></div><div class="metric-value" id="protein">117 <small>g/day</small></div><div class="metric-note" id="proteinnote">For your selected goal</div><div class="bar"><span id="proteinbar"></span></div></article>
+        <article class="metric calories"><div class="metric-top"><span class="metric-name">Daily calories</span><span class="metric-icon">⚡</span></div><div class="metric-value" id="calories">2,700 <small>kcal</small></div><div class="metric-note" id="calorienote">Goal-based estimate</div><div class="bar"><span id="calbar" style="background:var(--orange);width:70%"></span></div></article>
+        <article class="metric bmr"><div class="metric-top"><span class="metric-name">BMR</span><span class="metric-icon">🔥</span></div><div class="metric-value" id="bmr">1,580 <small>kcal</small></div><div class="metric-note">Estimated resting energy</div><div class="bar"><span id="bmrbar" style="background:#d4b4ff;width:55%"></span></div></article>
+      </div>
+      <div class="subgrid"><div class="mini"><span>MAINTENANCE CALORIES</span><strong id="tdee">2,450 kcal</strong><span>Estimated daily energy use</span></div><div class="mini"><span>WORKOUT PLAN</span><strong id="workoutsummary">60 min × 5</strong><span>Minutes per session × days/week</span></div></div>
+      <div class="section"><div class="section-title"><h3>Your weekly workout plan</h3><span id="level">BALANCED ROUTINE</span></div><div class="routine" id="routine"></div></div>
+      <div class="notice"><strong>Keep in mind:</strong> These numbers are estimates, not medical advice. Hydration needs change with heat, sweating and health. Start gradually, recover well, and adjust based on your progress. If you have a medical condition affecting diet or fluids, ask a healthcare professional.</div>
+    </section>
+  </main>
+  <footer class="footer"><span>© FitMetric · Built for your everyday progress</span><span>Estimates use the Mifflin–St Jeor equation</span></footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);let goal='muscle';
+document.querySelectorAll('#goals button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#goals button').forEach(x=>x.classList.remove('active'));b.classList.add('active');goal=b.dataset.goal;calculate()}));
+['weight','height','age','sex','activity','duration','days'].forEach(id=>$(id).addEventListener('input',calculate));
+$('form').addEventListener('submit',e=>{e.preventDefault();calculate();document.querySelector('.results-head').scrollIntoView({behavior:'smooth',block:'nearest'})});
+$('reset').addEventListener('click',()=>{$('weight').value=65;$('height').value=170;$('age').value=25;$('sex').value='male';$('activity').value='1.55';$('duration').value='60';$('days').value='5';goal='muscle';document.querySelectorAll('#goals button').forEach(x=>x.classList.toggle('active',x.dataset.goal==='muscle'));calculate()});
+function calculate(){
+ const w=Number($('weight').value),h=Number($('height').value),a=Number($('age').value),sex=$('sex').value,activity=Number($('activity').value),duration=Number($('duration').value),days=Number($('days').value);
+ if(!(w>0&&w<=400&&h>=80&&h<=250&&a>=15&&a<=100))return;
+ const bmr=10*w+6.25*h-5*a+(sex==='male'?5:-161),tdee=bmr*activity;
+ const calories=Math.round(tdee+(goal==='muscle'?250:goal==='loss'?-400:0));
+ const pRate=goal==='maintain'?1.4:1.8,protein=Math.round(w*pRate),low=(w*30/1000),high=(w*40/1000),water=(w*35/1000);
+ $('water').innerHTML=water.toFixed(1)+' <small>L/day</small>';$('waternote').textContent=low.toFixed(1)+'–'+high.toFixed(1)+' L estimated range';
+ $('protein').innerHTML=protein+' <small>g/day</small>';$('proteinnote').textContent=pRate.toFixed(1)+' g per kg body weight';
+ $('calories').innerHTML=calories.toLocaleString('en-IN')+' <small>kcal</small>';$('calorienote').textContent=goal==='muscle'?'Small calorie surplus':goal==='loss'?'Moderate calorie deficit':'Maintenance target';
+ $('bmr').innerHTML=Math.round(bmr).toLocaleString('en-IN')+' <small>kcal</small>';$('tdee').textContent=Math.round(tdee).toLocaleString('en-IN')+' kcal';$('workoutsummary').textContent=duration+' min × '+days;
+ $('waterbar').style.width=Math.min(100,water/4*100)+'%';$('proteinbar').style.width=Math.min(100,protein/200*100)+'%';$('calbar').style.width=Math.min(100,calories/3500*100)+'%';$('bmrbar').style.width=Math.min(100,bmr/2500*100)+'%';
+ const plans={3:[['MON','Full-body strength','Squat, push, row, core'],['WED','Full-body strength','Hinge, press, pulldown, core'],['FRI','Full-body + cardio','Compound lifts, then easy cardio']],4:[['MON','Upper body','Chest, back, shoulders, arms'],['TUE','Lower body','Squat, hinge, legs, calves'],['THU','Upper body','Presses, rows, arms'],['SAT','Lower body + core','Legs, glutes, core']],5:[['MON','Push day','Chest, shoulders, triceps'],['TUE','Pull day','Back, rear delts, biceps'],['WED','Legs + core','Quads, hamstrings, glutes'],['FRI','Upper body','Balanced upper-body strength'],['SAT','Cardio + mobility','20–30 min easy cardio, stretch']],6:[['MON','Push day','Chest, shoulders, triceps'],['TUE','Pull day','Back, biceps'],['WED','Legs','Quads, hamstrings, calves'],['THU','Push day','Controlled volume, good form'],['FRI','Pull day','Back, rear delts, biceps'],['SAT','Legs + core','Legs, glutes, core']]};
+ let entries=plans[days].slice();let daysNames=['MON','TUE','WED','THU','FRI','SAT','SUN'];let used=entries.map(e=>e[0]);let all=entries.map(e=>({tag:e[0],title:e[1],desc:e[2]}));daysNames.filter(d=>!used.includes(d)).forEach(d=>all.push({tag:d,title:'Recovery / rest',desc:'Gentle walk, mobility, quality sleep'}));all.sort((x,y)=>daysNames.indexOf(x.tag)-daysNames.indexOf(y.tag));
+ $('routine').innerHTML=all.map(e=>`<div class="day"><div class="daytag">${e.tag}</div><div><strong>${e.title}</strong><small>${e.desc}</small></div>${e.title.includes('rest')?'<span class="rest">REST</span>':''}</div>`).join('');
+ $('level').textContent=days>=5?'ACTIVE ROUTINE':'BALANCED ROUTINE';
+}
+calculate();
+</script>
+</body>
+</html>
